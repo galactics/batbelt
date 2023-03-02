@@ -14,14 +14,16 @@ function unmark {
 }
 function marks {
 
+    action=""
+
     while [[ $# -gt 0 ]]; do
       case $1 in
         -e|--export)
-          case=export
+          action=export
           shift
           ;;
         -i|--import)
-          case=import
+          action=import
           filepath=$2
           shift
           shift
@@ -45,14 +47,14 @@ function marks {
     IFS=$'\n'
     filelist=$(ls -l --color=never $MARKPATH | sed 's/  / /g' | cut -d' ' -f9-)
 
-    if [[ "${case}" == "export" ]]; then
+    if [[ "${action}" == "export" ]]; then
         for f in $filelist; do
             name=$(echo $f | cut -d ' ' -f 1)
             path=$(echo $f | cut -d ' ' -f 3)
             printf "%s %s\n" $name $path
         done
         return 0
-    elif [[ "${case}" == "import" ]]; then
+    elif [[ "${action}" == "import" ]]; then
         echo "Importing $filepath"
         mkdir -p $MARKPATH
         while read line; do
