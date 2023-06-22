@@ -1,7 +1,7 @@
 #!/bin/bash
 
 wfi() {
-    WFI_LIST="${HOME}/.wfi"
+    WFI_LIST="${HOME}/.wfi$$"
 
     print_help() {
         echo "Wait For It"
