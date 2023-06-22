@@ -1,6 +1,9 @@
 #!/bin/bash
 
 wfi() {
+
+    set +e
+
     WFI_LIST="${HOME}/.wfi$$"
 
     print_help() {
@@ -124,6 +127,7 @@ wfi() {
     }
 
     spinner='/-\|'
+    synthesis=0
 
     _printline () {
 
@@ -138,11 +142,13 @@ wfi() {
             echo "${name} ${dash} ${spinner:iter:1}     "
         else
             wait $pid
-            if [[ $? -ne 0 ]]; then
+            code=$?
+            if [[ $code -ne 0 ]]; then
                 res="[ \033[91mKO\033[0m ]"
             else
                 res="[ \033[92mOK\033[0m ]"
             fi
+            synthesis=$((code + synthesis))
 
             echo -e "${name} ${dash} ${res}"
         fi
@@ -219,6 +225,7 @@ wfi() {
             _clear
         fi
     fi
+    return $synthesis
 }
 
 export -f wfi
