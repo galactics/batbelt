@@ -2,7 +2,13 @@
 
 wfi() {
 
-    set +e
+    # Register the -e flag if it exists
+    iseset=0
+    if [[ $- == *e* ]]; then
+        iseset=1
+        set +e
+    fi
+
 
     WFI_LIST="${HOME}/.wfi$$"
 
@@ -225,6 +231,12 @@ wfi() {
             _clear
         fi
     fi
+
+    # Reset -e if it was previously active
+    if [[ $iseset -eq 1 ]]; then
+        set -e
+    fi
+
     return $synthesis
 }
 
